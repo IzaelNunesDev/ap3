@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from app.models import ViagemAlunos
 import uuid
 from typing import List, Optional
@@ -21,11 +21,11 @@ async def listar_viagem_alunos(
     viagem_id: Optional[uuid.UUID] = None,
     aluno_id: Optional[uuid.UUID] = None,
     status_embarque: Optional[str] = None,
-    limit: int = 10
+    limit: int = Query(10, gt=0, description="O número de inscrições a serem retornadas não pode ser negativo.")
 ):
     query = ViagemAlunos.all()
     if viagem_id:
-        query = query.filter(viagem_id=viagem_id)
+        query = query.filter(viagem_id=viagem_id).allow_filtering()
     if aluno_id:
         query = query.filter(aluno_id=aluno_id).allow_filtering()
     if status_embarque:

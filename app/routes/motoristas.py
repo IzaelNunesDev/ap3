@@ -4,6 +4,7 @@ import uuid
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
+from fastapi import Query
 
 router = APIRouter()
 PydanticMotorista = Motorista.as_pydantic()
@@ -27,11 +28,11 @@ async def criar_motorista(motorista: PydanticMotoristaCreate):
 async def listar_motoristas(
     cpf: Optional[str] = None,
     cidade: Optional[str] = None,
-    limit: int = 10
+    limit: int = Query(10, gt=0, description="O número de motoristas a serem retornados não pode ser negativo.")
 ):
     query = Motorista.all()
     if cpf:
-        query = query.filter(cpf=cpf)
+        query = query.filter(cpf=cpf).allow_filtering()
     if cidade:
         query = query.filter(endereco_cidade=cidade).allow_filtering()
     

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from app.models import Veiculo
 import uuid
 from typing import List, Optional
@@ -22,11 +22,11 @@ async def criar_veiculo(veiculo: PydanticVeiculoCreate):
 async def listar_veiculos(
     placa: Optional[str] = None,
     modelo: Optional[str] = None,
-    limit: int = 10
+    limit: int = Query(10, gt=0, description="O número de veículos a serem retornados não pode ser negativo.")
 ):
     query = Veiculo.all()
     if placa:
-        query = query.filter(placa=placa)
+        query = query.filter(placa=placa).allow_filtering()
     if modelo:
         query = query.filter(modelo=modelo).allow_filtering()
     

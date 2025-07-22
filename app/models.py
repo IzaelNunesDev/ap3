@@ -56,10 +56,10 @@ class Admin(Model):
 
 class Viagem(Model):
     __table_name__ = "viagens"
-    # Chave primária correta: (rota_id) como partição, (data_viagem, id) como clusterização
-    rota_id = fields.UUID(partition_key=True)
-    data_viagem = fields.Timestamp(clustering_key=True, default=datetime.now)
+    # Chave primária corrigida para corresponder ao schema do banco de dados
+    data_viagem = fields.Timestamp(partition_key=True, default=datetime.now)
     id = fields.UUID(clustering_key=True, default=uuid.uuid4)
+    rota_id = fields.UUID(clustering_key=True)
 
     # Campos restantes
     veiculo_id = fields.UUID(index=True)
@@ -70,8 +70,8 @@ class Viagem(Model):
 
 class ViagemAlunos(Model):
     __table_name__ = "viagem_alunos"
-    # Chave primária otimizada para buscar alunos por viagem
-    viagem_id = fields.UUID(partition_key=True)
-    aluno_id = fields.UUID(clustering_key=True)
+    # Chave primária corrigida para corresponder ao schema do banco de dados
+    aluno_id = fields.UUID(partition_key=True)
+    viagem_id = fields.UUID(clustering_key=True)
     data_inscricao = fields.Timestamp(default=datetime.now)
     status_embarque = fields.Text(default="pendente")

@@ -4,6 +4,7 @@ import uuid
 from typing import List, Optional
 from pydantic import BaseModel
 import asyncio
+from fastapi import Query
 
 router = APIRouter()
 PydanticRota = Rota.as_pydantic()
@@ -26,11 +27,11 @@ async def listar_rotas(
     nome: Optional[str] = None,
     origem: Optional[str] = None,
     destino: Optional[str] = None,
-    limit: int = 10
+    limit: int = Query(10, gt=0, description="O número de rotas a serem retornadas não pode ser negativo.")
 ):
     query = Rota.all()
     if nome:
-        query = query.filter(nome=nome)
+        query = query.filter(nome=nome).allow_filtering()
     if origem:
         query = query.filter(origem=origem).allow_filtering()
     if destino:

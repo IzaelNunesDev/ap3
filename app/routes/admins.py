@@ -3,6 +3,7 @@ from app.models import Admin
 import uuid
 from typing import List, Optional
 from pydantic import BaseModel
+from fastapi import Query
 
 router = APIRouter()
 PydanticAdmin = Admin.as_pydantic()
@@ -20,11 +21,11 @@ async def criar_admin(admin: PydanticAdminCreate):
 async def listar_admins(
     email: Optional[str] = None,
     nivel_permissao: Optional[int] = None,
-    limit: int = 10
+    limit: int = Query(10, gt=0, description="O número de administradores a serem retornados não pode ser negativo.")
 ):
     query = Admin.all()
     if email:
-        query = query.filter(email=email)
+        query = query.filter(email=email).allow_filtering()
     if nivel_permissao is not None:
         query = query.filter(nivel_permissao=nivel_permissao).allow_filtering()
     

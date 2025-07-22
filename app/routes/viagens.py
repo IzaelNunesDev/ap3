@@ -4,6 +4,7 @@ import uuid
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
+from fastapi import Query
 
 router = APIRouter()
 PydanticViagem = Viagem.as_pydantic()
@@ -26,11 +27,11 @@ async def listar_viagens(
     motorista_id: Optional[uuid.UUID] = None,
     veiculo_id: Optional[uuid.UUID] = None,
     status: Optional[str] = None,
-    limit: int = 10
+    limit: int = Query(10, gt=0, description="O número de viagens a serem retornadas não pode ser negativo.")
 ):
     query = Viagem.all()
     if rota_id:
-        query = query.filter(rota_id=rota_id)
+        query = query.filter(rota_id=rota_id).allow_filtering()
     if motorista_id:
         query = query.filter(motorista_id=motorista_id).allow_filtering()
     if veiculo_id:

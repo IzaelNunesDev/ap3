@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from app.models import Aluno
 import uuid
 from typing import List, Optional
@@ -18,8 +18,21 @@ async def criar_aluno(aluno: PydanticAlunoCreate):
     return await Aluno.create_async(**aluno.dict())
 
 @router.get("/", response_model=List[PydanticAluno])
-async def listar_alunos(limit: int = 10):
-    return await Aluno.all().limit(limit).all_async()
+async def listar_alunos(
+    cpf: Optional[str] = None,
+    nome: Optional[str] = None,
+    email: Optional[str] = None,
+    limit: int = Query(10, gt=0, description="O número de alunos a serem retornados não pode ser negativo.")
+):
+    query = Aluno.all()
+    if cpf:
+        query = query.filter(cpf=cpf).allow_filtering()
+    if nome:
+        query = query.filter(nome_completo=nome).allow_filtering()
+    if email:
+        query = query.filter(email=email).allow_filtering()
+
+    return await query.limit(limit).all_async()
 
 @router.get("/count/", response_model=int)
 async def contar_alunos():
