@@ -63,13 +63,3 @@ class ViagemAlunos(Model):
     aluno_id = fields.UUID(clustering_key=True)
     data_inscricao = fields.Timestamp(default=datetime.now)
     status_embarque = fields.Text(default="pendente")
-
-# Função para sincronizar todas as tabelas de forma assíncrona
-async def sync_all_tables_async():
-    await Rota.sync_table_async()
-    await Veiculo.sync_table_async()
-    await Motorista.sync_table_async()
-    await Aluno.sync_table_async()
-    await Admin.sync_table_async()
-    await Viagem.sync_table_async()
-    await ViagemAlunos.sync_table_async()
