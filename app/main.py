@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.database import connect_to_db_async, close_db_connection_async
+from app.database import connect_to_db_async, disconnect_from_db_async
 from app.models import Rota, Veiculo, Motorista, Aluno, Admin, Viagem, ViagemAlunos
 from caspyorm.models import sync_table_async
 
@@ -26,7 +26,7 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    await close_db_connection_async()
+    await disconnect_from_db_async()
 
 # Inclui todos os routers na aplicação
 app.include_router(alunos.router, prefix="/alunos", tags=["Alunos"])
