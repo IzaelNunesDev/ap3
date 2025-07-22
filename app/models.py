@@ -4,11 +4,11 @@ from caspyorm import Model, fields
 
 class Rota(Model):
     __table_name__ = "rotas"
-    id = fields.UUID(primary_key=True)
+    id = fields.UUID(primary_key=True, default=uuid.uuid4)
     nome = fields.Text(required=True, index=True)
     origem = fields.Text(required=True)
     destino = fields.Text(required=True)
-    paradas = fields.Map(fields.Text(), fields.Text())
+    paradas = fields.Map(key_field=fields.Text(), value_field=fields.Text())
     ativo = fields.Boolean(default=True)
 
 class Veiculo(Model):
@@ -28,6 +28,12 @@ class Motorista(Model):
     cnh = fields.Text(required=True)
     data_nascimento = fields.Timestamp()
     telefone = fields.Text()
+    # Relacionamento 1:1 (embedding) - Endereço
+    endereco_rua = fields.Text()
+    endereco_numero = fields.Text()
+    endereco_cidade = fields.Text()
+    endereco_cep = fields.Text()
+    endereco_estado = fields.Text()
 
 class Aluno(Model):
     __table_name__ = "alunos"
@@ -46,24 +52,29 @@ class Admin(Model):
     senha_hash = fields.Text(required=True)
     nivel_permissao = fields.Integer(default=1)
 
+# Em /home/izael/Projetos/Python/ap3/app/models.py
+
 class Viagem(Model):
     __table_name__ = "viagens"
-    # Chave primária correta: (rota_id) como partição, (data_viagem, id) como clusterização
-    rota_id = fields.UUID(partition_key=True)
-    data_viagem = fields.Timestamp(clustering_key=True)
-    id = fields.UUID(clustering_key=True, default=uuid.uuid4)
+    
+    # --- Início da Correção ---
+    # A ordem aqui define a chave primária.
+    # O primeiro campo vira a "partition key". Os seguintes, "clustering keys".
+    data_viagem = fields.Timestamp(primary_key=True, default=datetime.now)
+    id = fields.UUID(primary_key=True, default=uuid.uuid4)
+    rota_id = fields.UUID(primary_key=True)
+    # --- Fim da Correção ---
 
-    # Campos restantes
     veiculo_id = fields.UUID(index=True)
     motorista_id = fields.UUID(index=True)
-    hora_partida = fields.Timestamp(required=True)
-    vagas_disponiveis = fields.Integer(required=True)
-    status = fields.Text(default="agendada")
+    hora_partida = fields.Timestamp()
+    vagas_disponiveis = fields.Integer()
+    status = fields.Text(default="Agendada")
 
 class ViagemAlunos(Model):
     __table_name__ = "viagem_alunos"
     # Garante a ordem correta da chave primária
-    viagem_id = fields.UUID(partition_key=True)
-    aluno_id = fields.UUID(clustering_key=True)
+    aluno_id = fields.UUID(primary_key=True)
+    viagem_id = fields.UUID(primary_key=True)
     data_inscricao = fields.Timestamp(default=datetime.now)
     status_embarque = fields.Text(default="pendente")
