@@ -15,6 +15,9 @@ ASTRA_CLIENT_ID = os.getenv("ASTRA_CLIENT_ID")
 ASTRA_CLIENT_SECRET = os.getenv("ASTRA_CLIENT_SECRET")
 # Usa o caminho relativo do .env para construir o caminho absoluto
 ASTRA_BUNDLE_PATH_RELATIVE = os.getenv("ASTRA_BUNDLE_PATH")
+# Garante que o caminho relativo não comece com './' para evitar problemas em alguns ambientes
+if ASTRA_BUNDLE_PATH_RELATIVE and ASTRA_BUNDLE_PATH_RELATIVE.startswith('./'):
+    ASTRA_BUNDLE_PATH_RELATIVE = ASTRA_BUNDLE_PATH_RELATIVE[2:]
 ASTRA_BUNDLE_PATH = os.path.join(BASE_DIR, ASTRA_BUNDLE_PATH_RELATIVE) if ASTRA_BUNDLE_PATH_RELATIVE else None
 ASTRA_KEYSPACE = os.getenv("ASTRA_KEYSPACE")
 
