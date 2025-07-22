@@ -8,7 +8,7 @@ class Rota(Model):
     nome = fields.Text(required=True, index=True)
     origem = fields.Text(required=True)
     destino = fields.Text(required=True)
-    paradas = fields.Map(key_field=fields.Text(), value_field=fields.Text())
+    paradas = fields.Map(fields.Text(), fields.Text())
     ativo = fields.Boolean(default=True)
 
 class Veiculo(Model):
@@ -56,25 +56,22 @@ class Admin(Model):
 
 class Viagem(Model):
     __table_name__ = "viagens"
-    
-    # --- Início da Correção ---
-    # A ordem aqui define a chave primária.
-    # O primeiro campo vira a "partition key". Os seguintes, "clustering keys".
-    data_viagem = fields.Timestamp(primary_key=True, default=datetime.now)
-    id = fields.UUID(primary_key=True, default=uuid.uuid4)
-    rota_id = fields.UUID(primary_key=True)
-    # --- Fim da Correção ---
+    # Chave primária correta: (rota_id) como partição, (data_viagem, id) como clusterização
+    rota_id = fields.UUID(partition_key=True)
+    data_viagem = fields.Timestamp(clustering_key=True, default=datetime.now)
+    id = fields.UUID(clustering_key=True, default=uuid.uuid4)
 
+    # Campos restantes
     veiculo_id = fields.UUID(index=True)
     motorista_id = fields.UUID(index=True)
     hora_partida = fields.Timestamp()
     vagas_disponiveis = fields.Integer()
-    status = fields.Text(default="Agendada")
+    status = fields.Text(default="agendada")
 
 class ViagemAlunos(Model):
     __table_name__ = "viagem_alunos"
-    # Garante a ordem correta da chave primária
-    aluno_id = fields.UUID(primary_key=True)
-    viagem_id = fields.UUID(primary_key=True)
+    # Chave primária otimizada para buscar alunos por viagem
+    viagem_id = fields.UUID(partition_key=True)
+    aluno_id = fields.UUID(clustering_key=True)
     data_inscricao = fields.Timestamp(default=datetime.now)
     status_embarque = fields.Text(default="pendente")
