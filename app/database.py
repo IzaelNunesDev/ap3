@@ -6,10 +6,16 @@ from caspyorm import connection
 # Carrega as variáveis de ambiente
 load_dotenv()
 
+# Constrói o caminho absoluto para o diretório base do projeto
+# O __file__ é o caminho para database.py, então subimos dois níveis (app -> root)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Variáveis de ambiente para conexão com o AstraDB
 ASTRA_CLIENT_ID = os.getenv("ASTRA_CLIENT_ID")
 ASTRA_CLIENT_SECRET = os.getenv("ASTRA_CLIENT_SECRET")
-ASTRA_BUNDLE_PATH = os.getenv("ASTRA_BUNDLE_PATH")
+# Usa o caminho relativo do .env para construir o caminho absoluto
+ASTRA_BUNDLE_PATH_RELATIVE = os.getenv("ASTRA_BUNDLE_PATH")
+ASTRA_BUNDLE_PATH = os.path.join(BASE_DIR, ASTRA_BUNDLE_PATH_RELATIVE) if ASTRA_BUNDLE_PATH_RELATIVE else None
 ASTRA_KEYSPACE = os.getenv("ASTRA_KEYSPACE")
 
 # Configuração de logging

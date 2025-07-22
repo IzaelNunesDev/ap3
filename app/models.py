@@ -48,9 +48,12 @@ class Admin(Model):
 
 class Viagem(Model):
     __table_name__ = "viagens"
+    # Chave primária correta: (rota_id) como partição, (data_viagem, id) como clusterização
     rota_id = fields.UUID(partition_key=True)
-    data_viagem = fields.Timestamp(partition_key=True)
+    data_viagem = fields.Timestamp(clustering_key=True)
     id = fields.UUID(clustering_key=True, default=uuid.uuid4)
+
+    # Campos restantes
     veiculo_id = fields.UUID(index=True)
     motorista_id = fields.UUID(index=True)
     hora_partida = fields.Timestamp(required=True)
@@ -59,6 +62,7 @@ class Viagem(Model):
 
 class ViagemAlunos(Model):
     __table_name__ = "viagem_alunos"
+    # Garante a ordem correta da chave primária
     viagem_id = fields.UUID(partition_key=True)
     aluno_id = fields.UUID(clustering_key=True)
     data_inscricao = fields.Timestamp(default=datetime.now)
