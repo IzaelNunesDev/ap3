@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.database import connect_to_db_async, disconnect_from_db_async
 from app.models import Rota, Veiculo, Motorista, Aluno, Admin, Viagem, ViagemAlunos
 
@@ -15,6 +16,19 @@ app = FastAPI(
     title="Rota Fácil API",
     description="API para gerenciamento de rotas, veículos, motoristas e alunos.",
     version="1.0.0"
+)
+
+# --- Adicionar o Middleware de CORS ---
+origins = [
+    "*",  # Permite todas as origens. Para um ambiente de produção, é mais seguro restringir.
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos
+    allow_headers=["*"],  # Permite todos os cabeçalhos
 )
 
 @app.on_event("startup")
