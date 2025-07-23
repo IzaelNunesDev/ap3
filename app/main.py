@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import connect_to_db_async, disconnect_from_db_async
 from app.models import Rota, Veiculo, Motorista, Aluno, Admin, Viagem, ViagemAlunos
+from app.logging_config import setup_logging
 
 # Importa todos os seus arquivos de rota
 from app.alunos import routes as alunos_routes
@@ -11,6 +12,9 @@ from app.veiculos import routes as veiculos_routes
 from app.admins import routes as admins_routes
 from app.viagens import routes as viagens_routes
 from app.viagem_alunos import routes as viagem_alunos_routes
+
+# Configura o logging
+setup_logging()
 
 app = FastAPI(
     title="Rota Fácil API",
