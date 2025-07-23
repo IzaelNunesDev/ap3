@@ -2,16 +2,20 @@
 
 **CaspyORM** é um Object-Relational Mapper (ORM) moderno, assíncrono e de alta performance para o Apache Cassandra, construído com Python. Ele foi projetado para ser intuitivo, poderoso e fácil de integrar com frameworks web modernos como FastAPI.
 
-A filosofia do CaspyORM é fornecer uma API expressiva e familiar (inspirada no Django ORM) que abstrai a complexidade do CQL (Cassandra Query Language), ao mesmo tempo que expõe os recursos poderosos do Cassandra, como operações em lote, atualizações atômicas e paginação eficiente.
-
 ## Principais Recursos
 
 - **API Síncrona e Assíncrona:** Use `async/await` para aplicações de alta performance ou a API síncrona tradicional para scripts e tarefas mais simples.
+
 - **Sintaxe de Query Expressiva:** Construa consultas complexas de forma encadeada e legível com o `QuerySet` (`filter`, `order_by`, `limit`, etc.).
+
 - **Validação de Dados:** Tipos de campo robustos que validam e convertem dados automaticamente.
+
 - **Sincronização de Schema:** Crie e atualize tabelas no Cassandra automaticamente a partir da definição dos seus modelos com o método `sync_table()`.
+
 - **Integração com Pydantic/FastAPI:** Gere modelos Pydantic a partir dos seus modelos CaspyORM com um único comando (`as_pydantic()`), simplificando a criação de APIs.
+
 - **Recursos Avançados do Cassandra:** Suporte para operações em lote (`bulk_create`), atualizações atômicas (`update_collection`) e paginação eficiente (`page()`).
+
 - **Sistema de Logging e Avisos:** Logs detalhados para depuração e avisos inteligentes para ajudar a evitar queries ineficientes.
 
 ---

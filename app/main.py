@@ -3,7 +3,13 @@ from app.database import connect_to_db_async, disconnect_from_db_async
 from app.models import Rota, Veiculo, Motorista, Aluno, Admin, Viagem, ViagemAlunos
 
 # Importa todos os seus arquivos de rota
-from app.routes import alunos, veiculos, motoristas, admins, rotas, viagens, viagem_alunos
+from app.alunos import routes as alunos_routes
+from app.motoristas import routes as motoristas_routes
+from app.rotas import routes as rotas_routes
+from app.veiculos import routes as veiculos_routes
+from app.admins import routes as admins_routes
+from app.viagens import routes as viagens_routes
+from app.viagem_alunos import routes as viagem_alunos_routes
 
 app = FastAPI(
     title="Rota Fácil API",
@@ -28,10 +34,10 @@ async def shutdown_event():
     await disconnect_from_db_async()
 
 # Inclui todos os routers na aplicação
-app.include_router(alunos.router, prefix="/alunos", tags=["Alunos"])
-app.include_router(veiculos.router, prefix="/veiculos", tags=["Veículos"])
-app.include_router(motoristas.router, prefix="/motoristas", tags=["Motoristas"])
-app.include_router(admins.router, prefix="/admins", tags=["Admins"])
-app.include_router(rotas.router, prefix="/rotas", tags=["Rotas"])
-app.include_router(viagens.router, prefix="/viagens", tags=["Viagens"])
-app.include_router(viagem_alunos.router, prefix="/viagem_alunos", tags=["ViagemAlunos"])
+app.include_router(alunos_routes.router)
+app.include_router(motoristas_routes.router)
+app.include_router(rotas_routes.router)
+app.include_router(veiculos_routes.router)
+app.include_router(admins_routes.router)
+app.include_router(viagens_routes.router)
+app.include_router(viagem_alunos_routes.router)
