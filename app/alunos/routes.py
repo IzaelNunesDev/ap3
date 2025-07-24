@@ -11,7 +11,6 @@ router = APIRouter(
     tags=["Alunos"]
 )
 
-# Obtém um logger para o módulo atual
 logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=schemas.AlunoOut, status_code=status.HTTP_201_CREATED)
@@ -36,8 +35,6 @@ async def listar_alunos(
     if matricula:
         query = query.filter(matricula=matricula).allow_filtering()
     if nome:
-        # Supondo que você queira uma busca 'contém', o que não é direto no Cassandra.
-        # Mantendo o filtro de igualdade por simplicidade.
         query = query.filter(nome_completo=nome).allow_filtering()
     if email:
         query = query.filter(email=email).allow_filtering()
@@ -69,7 +66,6 @@ async def atualizar_aluno(aluno_id: uuid.UUID, aluno_data: schemas.AlunoUpdate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Nenhum dado fornecido para atualização")
 
     await aluno.update_async(**update_data)
-    # Re-fetch para obter os dados atualizados, já que update_async não os retorna
     aluno_atualizado = await Aluno.get_async(id=aluno_id)
     return aluno_atualizado
 

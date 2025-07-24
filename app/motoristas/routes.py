@@ -65,9 +65,8 @@ async def deletar_motorista(motorista_id: uuid.UUID):
         await motorista.delete_async()
         return {}
     except Motorista.DoesNotExist:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Motorista não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Motorista não encontrado")   
 
-# CONSULTA COMPLEXA 2: Listar viagens futuras de um motorista com veículo específico
 @router.get("/{motorista_id}/viagens_com_veiculo/{veiculo_id}", response_model=List[schemas.ViagemOut])
 async def listar_viagens_motorista_veiculo(motorista_id: uuid.UUID, veiculo_id: uuid.UUID):
     try:
@@ -83,7 +82,7 @@ async def listar_viagens_motorista_veiculo(motorista_id: uuid.UUID, veiculo_id: 
     viagens = await Viagem.filter(
         motorista_id=motorista_id,
         veiculo_id=veiculo_id,
-        data_viagem__gte=datetime.now() # Usar data_viagem ao invés de hora_partida para filtro de data
+        data_viagem__gte=datetime.now()
     ).allow_filtering().all_async()
 
     return viagens

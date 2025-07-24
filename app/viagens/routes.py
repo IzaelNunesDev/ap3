@@ -13,7 +13,6 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas.ViagemOut, status_code=status.HTTP_201_CREATED)
 async def criar_viagem(viagem: schemas.ViagemCreate):
-    # O ID é gerado automaticamente pelo Cassandra, não precisamos passá-lo
     nova_viagem = await Viagem.create_async(**viagem.dict())
     return nova_viagem
 

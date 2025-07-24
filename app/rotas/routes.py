@@ -5,7 +5,7 @@ import asyncio
 
 from app.models import Rota, Viagem, ViagemAlunos, Aluno
 from . import schemas
-from app.alunos.schemas import AlunoOut # Importa schema de aluno para a consulta
+from app.alunos.schemas import AlunoOut
 
 router = APIRouter(
     prefix="/rotas",
@@ -71,7 +71,7 @@ async def deletar_rota(rota_id: uuid.UUID):
     except Rota.DoesNotExist:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rota não encontrada")
 
-# CONSULTA COMPLEXA 1: Listar todos os alunos de uma rota específica
+# CONSULTA COMPLEXA 1: Listar todos os alunos de uma rota específica    
 @router.get("/{rota_id}/alunos", response_model=List[AlunoOut])
 async def listar_alunos_na_rota(rota_id: uuid.UUID):
     viagens = await Viagem.filter(rota_id=rota_id).all_async()

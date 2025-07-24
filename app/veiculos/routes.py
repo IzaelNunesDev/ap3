@@ -12,7 +12,6 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas.VeiculoOut, status_code=status.HTTP_201_CREATED)
 async def criar_veiculo(veiculo: schemas.VeiculoCreate):
-    # O ID agora é passado no body, conforme o schema
     novo_veiculo = await Veiculo.create_async(**veiculo.dict())
     return novo_veiculo
 

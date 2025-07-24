@@ -117,8 +117,6 @@ async def deletar_rota(rota_id: uuid.UUID):
         logger.error(f"Erro ao deletar rota com ID {rota_id}: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Erro interno ao deletar a rota.")
 
-# CONSULTA COMPLEXA 1: Listar todos os alunos de uma rota específica
-# Entidades envolvidas: Rota -> Viagem -> ViagemAlunos -> Aluno (4 entidades)
 @router.get("/{rota_id}/alunos", response_model=List[PydanticAluno])
 async def listar_alunos_na_rota(rota_id: uuid.UUID):
     logger.info(f"Listando alunos para a rota {rota_id}")

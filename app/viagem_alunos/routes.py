@@ -13,11 +13,9 @@ router = APIRouter(
 @router.post("/", response_model=schemas.ViagemAlunosOut, status_code=status.HTTP_201_CREATED)
 async def criar_viagem_aluno(viagem_aluno: schemas.ViagemAlunosCreate):
     try:
-        # Checar se a inscrição já existe para evitar duplicatas
         await ViagemAlunos.get_async(viagem_id=viagem_aluno.viagem_id, aluno_id=viagem_aluno.aluno_id)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Aluno já inscrito nesta viagem")
     except ViagemAlunos.DoesNotExist:
-        # Se não existe, podemos criar
         nova_inscricao = await ViagemAlunos.create_async(**viagem_aluno.dict())
         return nova_inscricao
 

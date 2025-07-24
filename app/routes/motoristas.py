@@ -12,7 +12,7 @@ PydanticMotorista = Motorista.as_pydantic()
 PydanticMotoristaCreate = Motorista.as_pydantic(exclude=["id"])
 PydanticViagem = Viagem.as_pydantic()
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)    
 
 class MotoristaUpdate(BaseModel):
     nome_completo: Optional[str] = None
@@ -116,8 +116,6 @@ async def deletar_motorista(motorista_id: uuid.UUID):
         logger.error(f"Erro ao deletar motorista com ID {motorista_id}: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Erro interno ao deletar o motorista.")
 
-# CONSULTA COMPLEXA 2: Listar viagens futuras de um motorista com veículo específico
-# Entidades envolvidas: Motorista, Veiculo, Viagem (3 entidades)
 @router.get("/{motorista_id}/viagens_com_veiculo/{veiculo_id}", response_model=List[PydanticViagem])
 async def listar_viagens_motorista_veiculo(motorista_id: uuid.UUID, veiculo_id: uuid.UUID):
     logger.info(f"Listando viagens para o motorista {motorista_id} com o veículo {veiculo_id}")

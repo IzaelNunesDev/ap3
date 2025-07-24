@@ -1,0 +1,15 @@
+2025-07-23 22:37:03,393 - uvicorn.error - INFO - Started server process [37440]
+2025-07-23 22:37:03,393 - uvicorn.error - INFO - Waiting for application startup.
+2025-07-23 22:37:03,394 - root - INFO - Iniciando conexão local com Cassandra em 127.0.0.1:9042...
+2025-07-23 22:37:03,396 - cassandra.cluster - WARNING - Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['127.0.0.1'], lbp = None)
+2025-07-23 22:37:03,402 - cassandra.connection - WARNING - An authentication challenge was not sent, this is suspicious because the driver expects authentication (configured authenticator = PlainTextAuthenticator)
+2025-07-23 22:37:03,413 - cassandra.policies - INFO - Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '127.0.0.1:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-07-23 22:37:03,420 - cassandra.connection - WARNING - An authentication challenge was not sent, this is suspicious because the driver expects authentication (configured authenticator = PlainTextAuthenticator)
+2025-07-23 22:37:03,423 - root - INFO - Conexão local com o Cassandra estabelecida com sucesso em 127.0.0.1:9042
+2025-07-23 22:37:03,471 - uvicorn.error - INFO - Application startup complete.
+2025-07-23 22:37:05,378 - uvicorn.error - INFO - Shutting down
+2025-07-23 22:37:05,479 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-07-23 22:37:05,480 - root - INFO - Fechando a conexão com o banco de dados...
+2025-07-23 22:37:05,481 - root - INFO - Conexão com o banco de dados fechada.
+2025-07-23 22:37:05,481 - uvicorn.error - INFO - Application shutdown complete.
+2025-07-23 22:37:05,481 - uvicorn.error - INFO - Finished server process [37440]

@@ -3,7 +3,6 @@ from typing import Optional
 import uuid
 from datetime import datetime
 
-# Schemas para Motorista
 class MotoristaBase(BaseModel):
     nome_completo: str
     cpf: str
@@ -34,8 +33,6 @@ class MotoristaOut(MotoristaBase):
     class Config:
         orm_mode = True
 
-# Schema para a saída da consulta complexa de Viagem
-# O ideal é que este schema fique em app/viagens/schemas.py no futuro
 class ViagemOut(BaseModel):
     id: uuid.UUID
     data_viagem: datetime
